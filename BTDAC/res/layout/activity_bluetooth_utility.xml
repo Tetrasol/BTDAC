@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66cccccc"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".BluetoothUtilityActivity" >
+
+  <!--   <TextView
+        android:id="@+id/welcome_header"
+        android:text="@string/welcome_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" /> 
+    
+  -->
+    
+    <Button 
+        android:id="@+id/check_bt_enabled_btn"
+        android:text="@string/check_bt_btn_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_spacing_btwn_btn"
+        android:layout_marginRight="@dimen/margin_spacing_btwn_btn"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true" 
+        />
+    
+	<Button
+	    android:id="@+id/conn_scan_btn"
+	    android:text="@string/conn_scan_btn_txt"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+		android:layout_alignRight="@+id/check_bt_enabled_btn"
+		android:layout_alignLeft="@+id/check_bt_enabled_btn"
+	    android:layout_below="@+id/check_bt_enabled_btn" 
+	    android:layout_marginBottom="@dimen/margin_spacing_btwn_btn" />
+
+   <ListView
+       android:id="@+id/device_list"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:layout_above="@+id/scan_for_device_msg"
+       android:layout_alignParentRight="true"
+       android:layout_alignParentTop="true"
+       android:layout_toRightOf="@id/check_bt_enabled_btn" >
+
+    </ListView>
+    
+    <TextView
+        android:id="@+id/scan_for_device_msg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@id/device_list"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/conn_scan_btn"
+        android:layout_marginTop="20dp"
+        android:text="@string/scan_for_device_text_msg" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/scan_for_device_msg"
+        android:layout_alignTop="@+id/scan_for_device_msg"
+        android:layout_marginLeft="409dp" />
+
+</RelativeLayout>
