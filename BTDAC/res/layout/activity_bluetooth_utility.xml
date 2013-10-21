@@ -45,7 +45,8 @@
        android:layout_above="@+id/scan_for_device_msg"
        android:layout_alignParentRight="true"
        android:layout_alignParentTop="true"
-       android:layout_toRightOf="@id/check_bt_enabled_btn" >
+       android:layout_toRightOf="@id/check_bt_enabled_btn"
+       android:background="@android:color/holo_blue_dark" >
 
     </ListView>
     
@@ -59,7 +60,8 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/conn_scan_btn"
         android:layout_marginTop="20dp"
-        android:text="@string/scan_for_device_text_msg" />
+        android:text="@string/scan_for_device_text_msg"
+        android:background="@android:color/darker_gray" />
 
     <Space
         android:layout_width="wrap_content"

@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BluetoothDataCollector</string>
+    <string name="app_name">BT Data Collector</string>
     <string name="action_settings">Settings</string>
 
     <!-- Welcome Screen Activity Text -->
-    <string name="crt_bt_conn_wel_scrn_btn">Create New Bluetooth Connection</string>
-    <string name="crt_new_plot_wel_scrn_btn">Create New Data Plot</string>
+    <string name="crt_bt_conn_wel_scrn_btn">New Bluetooth Connection</string>
+    <string name="crt_new_plot_wel_scrn_btn">New Data Plot</string>
     <string name="ld_prev_plot_wel_scrn_btn">Load Previous Plot</string>
     <string name="settings_scrn_wel_scrn_btn">App Settings</string>
 
     <!-- Create BT Connection Activity Text -->
-    <string name="conn_scan_btn_txt">SCAN</string>
-    <string name="title_activity_bluetooth_chat">BluetoothChat</string>
-    <string name="title_activity_device_list">DeviceListActivity</string>
-    <string name="scan_for_device_text_msg">Please use the \'SCAN\' button to look for Bluetooth devices.</string>
-    <string name="title_activity_create_btconnection">Connect Via Bluetooth</string>
-
-    <!-- Dealing with BT Connection -->
-
-    <string name="need_bt_enabled">Bluetooth must be enabled to continue</string>
-    <string name="b"><b>Sign in</b> or register</string>
-    <string name="c">Sign in</string>
-    <string name="title_activity_bluetooth_utility">BluetoothUtilityActivity</string>
-    <string name="hello_world">Hello world!</string>
-
-    <string name="title_activity_bt_dac_main">Bluetooth Data Collector Welcome</string>
-    <string name="welcome_msg">This is the app I\'m creating!</string>
     <string name="check_bt_btn_txt">Check for Bluetooth</string>
+    <string name="conn_scan_btn_txt">Device Discovery</string>
+    <string name="scan_for_device_text_msg">Information on Bluetooth connection will appear here</string>
+    
+    <!-- Dealing with BT Connection -->
+    <string name="device_bt_support">Device does not support Bluetooth</string>
+    <string name="need_bt_enabled">Bluetooth must be enabled to continue</string>
+    <string name="title_activity_bluetooth_utility">BluetoothUtilityActivity</string>
+
     
 </resources>

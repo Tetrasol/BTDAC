@@ -11,12 +11,13 @@
     tools:context=".WelcomeScreenActivity" >
 
     <Button
+        android:id="@+id/goToCrtBTConn"
+        android:text="@string/crt_bt_conn_wel_scrn_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textAlignment="center"
-        android:id="@+id/goToCrtBTConn"
-        android:text="@string/crt_bt_conn_wel_scrn_btn" />
+        android:layout_marginBottom="@dimen/margin_spacing_btwn_btn" />
 
     <Button
         android:layout_width="match_parent"
@@ -24,11 +25,13 @@
         android:gravity="center"
         android:textAlignment="center"
         android:id="@+id/goToCrtNewPlot"
+        android:layout_marginBottom="@dimen/margin_spacing_btwn_btn"
         android:text="@string/crt_new_plot_wel_scrn_btn" />
 
     <Button 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_spacing_btwn_btn"
         android:gravity="center"
         android:textAlignment="center"
         android:id="@+id/goToLoadPrevPlot"
@@ -37,6 +40,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_spacing_btwn_btn"
         android:gravity="center"
         android:textAlignment="center"
         android:id="@+id/goToSettingsScreen"
