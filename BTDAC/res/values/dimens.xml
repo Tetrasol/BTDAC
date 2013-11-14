@@ -8,5 +8,6 @@
     <dimen name="btn_size_horizontal">144dp</dimen>
     <dimen name="btn_size_vertical">48dp</dimen>
     <dimen name="margin_spacing_btwn_btn">16dp</dimen>
+    <dimen name="spacing_btwn_anchor">15dp</dimen>
 
 </resources>

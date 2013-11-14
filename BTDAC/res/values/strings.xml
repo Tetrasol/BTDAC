@@ -2,23 +2,39 @@
 <resources>
 
     <string name="app_name">BT Data Collector</string>
+    <string name="title_activity_bluetooth_utility">BluetoothUtilityActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
     <string name="action_settings">Settings</string>
 
     <!-- Welcome Screen Activity Text -->
-    <string name="crt_bt_conn_wel_scrn_btn">New Bluetooth Connection</string>
-    <string name="crt_new_plot_wel_scrn_btn">New Data Plot</string>
+    <string name="crt_bt_conn_wel_scrn_btn">Bluetooth Connections</string>
+    <string name="crt_new_plot_wel_scrn_btn">Data Plots</string>
     <string name="ld_prev_plot_wel_scrn_btn">Load Previous Plot</string>
     <string name="settings_scrn_wel_scrn_btn">App Settings</string>
 
-    <!-- Create BT Connection Activity Text -->
-    <string name="check_bt_btn_txt">Check for Bluetooth</string>
-    <string name="conn_scan_btn_txt">Device Discovery</string>
-    <string name="scan_for_device_text_msg">Information on Bluetooth connection will appear here</string>
-    
-    <!-- Dealing with BT Connection -->
-    <string name="device_bt_support">Device does not support Bluetooth</string>
-    <string name="need_bt_enabled">Bluetooth must be enabled to continue</string>
-    <string name="title_activity_bluetooth_utility">BluetoothUtilityActivity</string>
+    <!-- Bluetooth Utility Activity Text -->
+    <string name="turn_on_bt">Enable BT</string>
+    <string name="scan_bt_dev">Find BT</string>
+    <string name="test_bt_msg">Test BT</string>
+    <string name="device_conn_logs">Information on Bluetooth connection will appear here.\n</string>
 
+    <!-- Dealing with BT Connection -->
+    <string name="device_bt_support_no">Device does not support Bluetooth</string>
+    <string name="need_bt_enabled">Bluetooth must be enabled to continue</string>
+
+    <!--  -->
+    <string name="usage_instruction_txt">Please press the enable bluetooth to ensure the device can utilize bluetooth capabilities.</string>
+    
+    <!--  -->
+    <string name="previous">Previous</string>
+    <string name="next">NEXT</string>
+    <string name="yes">YES!</string>
+    <string name="no">no</string>
+    <string name="paragraph1">You are the most beautiful woman on this universe. You have left me entranced by who you are. There is no other person like you.</string>
+    <string name="paragraph2">The kindness that you give me, the patience you have with me, they are the most precious gifts in my life.</string>
+    <string name="paragraph3">And now I want to give you a gift; a small gesture to demonstrate how much I love you and how much I appreciate you.</string>
+    <string name="paragraph4">I want to live the rest of my life at your side and I want the opportunity to make you happy as you have made me happy.</string>
+    <string name="paragraph5">That is why I want to ask you........</string>
+    <string name="paragraph6">WILL YOU MARRY ME?</string>
     
 </resources>

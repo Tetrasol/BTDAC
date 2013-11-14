@@ -27,48 +27,74 @@ public final class R {
         public static final int btn_size_horizontal=0x7f040002;
         public static final int btn_size_vertical=0x7f040003;
         public static final int margin_spacing_btwn_btn=0x7f040004;
+        public static final int spacing_btwn_anchor=0x7f040005;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f090008;
-        public static final int check_bt_enabled_btn=0x7f090000;
-        public static final int conn_scan_btn=0x7f090001;
-        public static final int device_list=0x7f090002;
-        public static final int goToCrtBTConn=0x7f090004;
-        public static final int goToCrtNewPlot=0x7f090005;
-        public static final int goToLoadPrevPlot=0x7f090006;
-        public static final int goToSettingsScreen=0x7f090007;
-        public static final int scan_for_device_msg=0x7f090003;
+        public static final int action_settings=0x7f09000e;
+        public static final int bt_device_msg_log=0x7f090005;
+        public static final int bt_radio_sw=0x7f090000;
+        public static final int device_list=0x7f090004;
+        public static final int goToCrtBTConn=0x7f09000a;
+        public static final int goToCrtNewPlot=0x7f09000b;
+        public static final int goToLoadPrevPlot=0x7f09000c;
+        public static final int goToSettingsScreen=0x7f09000d;
+        public static final int lower=0x7f090007;
+        public static final int next=0x7f090009;
+        public static final int previous=0x7f090008;
+        public static final int scan_bt_btn=0x7f090001;
+        public static final int test_bt_btn=0x7f090002;
+        public static final int upper=0x7f090006;
+        public static final int usage_instruction=0x7f090003;
     }
     public static final class layout {
         public static final int activity_bluetooth_utility=0x7f030000;
-        public static final int activity_welcome_screen=0x7f030001;
+        public static final int activity_settings=0x7f030001;
+        public static final int activity_welcome_screen=0x7f030002;
     }
     public static final class menu {
         public static final int bluetooth_utility=0x7f080000;
-        public static final int welcome_screen=0x7f080001;
+        public static final int settings=0x7f080001;
+        public static final int welcome_screen=0x7f080002;
     }
     public static final class string {
-        public static final int action_settings=0x7f050001;
+        public static final int action_settings=0x7f050003;
         public static final int app_name=0x7f050000;
-        /**  Create BT Connection Activity Text 
-         */
-        public static final int check_bt_btn_txt=0x7f050006;
-        public static final int conn_scan_btn_txt=0x7f050007;
         /**  Welcome Screen Activity Text 
          */
-        public static final int crt_bt_conn_wel_scrn_btn=0x7f050002;
-        public static final int crt_new_plot_wel_scrn_btn=0x7f050003;
+        public static final int crt_bt_conn_wel_scrn_btn=0x7f050004;
+        public static final int crt_new_plot_wel_scrn_btn=0x7f050005;
         /**  Dealing with BT Connection 
          */
-        public static final int device_bt_support=0x7f050009;
-        public static final int ld_prev_plot_wel_scrn_btn=0x7f050004;
-        public static final int need_bt_enabled=0x7f05000a;
-        public static final int scan_for_device_text_msg=0x7f050008;
-        public static final int settings_scrn_wel_scrn_btn=0x7f050005;
-        public static final int title_activity_bluetooth_utility=0x7f05000b;
+        public static final int device_bt_support_no=0x7f05000c;
+        public static final int device_conn_logs=0x7f05000b;
+        public static final int ld_prev_plot_wel_scrn_btn=0x7f050006;
+        public static final int need_bt_enabled=0x7f05000d;
+        public static final int next=0x7f050010;
+        public static final int no=0x7f050012;
+        public static final int paragraph1=0x7f050013;
+        public static final int paragraph2=0x7f050014;
+        public static final int paragraph3=0x7f050015;
+        public static final int paragraph4=0x7f050016;
+        public static final int paragraph5=0x7f050017;
+        public static final int paragraph6=0x7f050018;
+        /**   
+         */
+        public static final int previous=0x7f05000f;
+        public static final int scan_bt_dev=0x7f050009;
+        public static final int settings_scrn_wel_scrn_btn=0x7f050007;
+        public static final int test_bt_msg=0x7f05000a;
+        public static final int title_activity_bluetooth_utility=0x7f050001;
+        public static final int title_activity_settings=0x7f050002;
+        /**  Bluetooth Utility Activity Text 
+         */
+        public static final int turn_on_bt=0x7f050008;
+        /**   
+         */
+        public static final int usage_instruction_txt=0x7f05000e;
+        public static final int yes=0x7f050011;
     }
     public static final class style {
         /** 

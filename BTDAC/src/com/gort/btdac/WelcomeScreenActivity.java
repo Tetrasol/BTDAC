@@ -1,6 +1,4 @@
 package com.gort.btdac;
-import com.gort.btdac.btutil.BluetoothUtilityActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +7,9 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import com.gort.btdac.appsettings.SettingsActivity;
+import com.gort.btdac.btutil.BluetoothUtilityActivity;
 
 public class WelcomeScreenActivity extends Activity implements OnClickListener {
 	
@@ -53,14 +54,14 @@ public class WelcomeScreenActivity extends Activity implements OnClickListener {
 			startActivity(new Intent(this, BluetoothUtilityActivity.class));
 			break;
 		case R.id.goToCrtNewPlot:
-			break;
 //			startActivity(new Intent(this, CreateNewPlotActivity.class));
+			break;
 		case R.id.goToLoadPrevPlot:
-			break;
 //			startActivity(new Intent(this, LoadPreviousPlotActivity.class));
-		case R.id.goToSettingsScreen:
 			break;
-//			startActivity(new Intent(this, AppSettingsActivity.class));
+		case R.id.goToSettingsScreen:
+			startActivity(new Intent(this, SettingsActivity.class));
+			break;
 		default: // Do nothing - stay on current screen
 			break;
 		}
