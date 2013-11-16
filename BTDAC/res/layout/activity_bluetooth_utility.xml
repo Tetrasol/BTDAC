@@ -13,6 +13,8 @@
         android:id="@+id/bt_radio_sw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textOn="BT ON"
+        android:textOff="BT OFF"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
@@ -20,6 +22,10 @@
         android:id="@+id/scan_bt_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/bt_radio_sw"
+        android:layout_alignLeft="@+id/bt_radio_sw"
+        android:textOn="Scanning..."
+        android:textOff="Scan BT"
         android:layout_below="@+id/bt_radio_sw" />
 
     <Button
@@ -27,6 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/scan_bt_btn"
+        android:layout_alignRight="@+id/bt_radio_sw"
+        android:layout_alignLeft="@+id/bt_radio_sw"
         android:text="@string/test_bt_msg"
         android:textSize="6pt" />
     

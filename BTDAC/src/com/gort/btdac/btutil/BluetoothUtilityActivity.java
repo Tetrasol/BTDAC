@@ -192,41 +192,6 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	}
 	
 	@Override
-	protected void onStart() {
-		// 
-		super.onStart();
-		registerBroadcastReceivers();
-	}
-	
-	@Override
-	protected void onStop() {
-		// 
-		super.onStop();
-		unregisterReceiver(myReceiver);
-	}
-	
-	@Override
-	protected void onResume() {
-		//
-		super.onResume();
-		registerBroadcastReceivers();
-	}
-
-	@Override
-	protected void onPause() {
-		//
-		super.onPause();
-		unregisterReceiver(myReceiver);
-	}
-	
-	@Override
-	protected void onDestroy() {
-		// 
-		super.onDestroy();
-		unregisterReceiver(myReceiver);
-	}
-
-	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
