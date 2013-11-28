@@ -29,6 +29,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -37,7 +39,7 @@ import android.widget.ToggleButton;
 
 import com.gort.btdac.R;
 
-public class BluetoothUtilityActivity extends Activity implements OnClickListener, OnItemClickListener {
+public class BluetoothUtilityActivity extends Activity implements OnClickListener, OnItemClickListener, OnCheckedChangeListener {
 	
 	private static final String TAG = "com.gort.btdac.btutil.BluetoothUtilityActivity";
 	private static final String NAME = "BTDAC";
@@ -59,8 +61,11 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    
+    public String string = new String("I LOVE TITIES!\n");
+    public byte[] writeBuf = (byte[]) string.getBytes();
 	
-	// Bluetooth object declarations
+    // Bluetooth object declarations
 	private BluetoothAdapter myBluetoothAdapter;  // Local bluetooth adapter found in handset
 	private Set<BluetoothDevice> myPairedDevices; // Devices that have been already paired by system
 	private ArrayList<BluetoothDevice> myListedDevices; // Complete list of devices found paired & unpaired
@@ -77,6 +82,7 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	private TextView connectionMsgLogs;
 	
 	private AcceptThread myServerThread;
+	private ConnectedThread myConnThread;
 	
 	// Handler for ....
 	private final Handler mHandler = new Handler(){
@@ -100,6 +106,7 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
                 byte[] readBuf = (byte[]) msg.obj;
                 String string = new String(readBuf);
                 Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
+                connectionMsgLogs.append("what sort of message am I getting!!! - " + string + " \n");
                 break;
             }
         }
@@ -192,6 +199,24 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	}
 	
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(myReceiver);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(myReceiver);
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		registerBroadcastReceivers();
+	}
+	
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
@@ -240,47 +265,63 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	public void onClick(View v) {
 		//call handlers for button clicks based on id
 		switch(v.getId()) {
-		case R.id.bt_radio_sw:
-			Log.d(TAG, "Activity checkForBtEnabled() has been pressed");
-			checkForBtEnabled();
-			break;
+
 		case R.id.scan_bt_btn:
-			Log.d(TAG, "Activity performDeviceDiscovery() has been pressed");
-			performDeviceDiscovery();
+			if (((ToggleButton) v).isChecked()) {
+				Log.d(TAG, "Activity performDeviceDiscovery() has been pressed");
+				performDeviceDiscovery();
+		    } 
 			break;
-//		case R.id.bt_connect_btn:
-//			Log.d(TAG, "Activity commencing Server thread and socket has been pressed");
-//			myServerThread = new AcceptThread();
-//			myServerThread.start();
-//			break;
+		
+		case R.id.test_bt_btn:
+			Log.d(TAG, "Activity testBT has been pressed");
+			sendTestMessageOut();
+			break;
 		default:
 			break;
 		}	
 	}
 
+
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		if (((Switch) buttonView).isChecked()) {
+			Log.d(TAG, "Activity checkForBtEnabled() has been turned on");
+			checkForBtEnabled();
+			
+			// need to set up for the BluetoothServerSocket
+			// to listen for anyone trying to make connections
+			myServerThread = new AcceptThread();
+			myServerThread.start();
+	    }
+		// TODO Need to respond to situations in which the user has turned off the switch;
+		// therefore, respond to turning off the bluetooth and present alerts to handle disconnections
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		Log.d(TAG, "You clicked this item: " + view.toString() + " at " + position + " with " + id);
 		connectionMsgLogs.append("You clicked this item: " + view.toString() + " at " + position + " with " + id);
+		
 		// cancel any discovery before attempting to create a connection
 		if (myBluetoothAdapter.isDiscovering()) {
 			myBluetoothAdapter.cancelDiscovery();
 			Log.d(TAG, "Stopped discovery process");
 			 connectionMsgLogs.append("canceling discovery");
 		}
- 
-
+		myServerThread.cancel();
 		BluetoothDevice selectedDevice = myListedDevices.get(position);
         
 		ConnectThread connect = new ConnectThread(selectedDevice);
-        
+		
         connect.start();
+        
         Log.d(TAG, "selectedDevice = " + selectedDevice.getName() + " " + selectedDevice.getBondState() + "\n");
         Log.d(TAG, "selectedDevice = " + connect.getId() + " " + connect.getName() + connect.getState() + "\n");
 		connectionMsgLogs.append("selectedDevice = " + selectedDevice.getName() + " " + selectedDevice.getBondState() + "\n");
 		connectionMsgLogs.append("selectedDevice = " + connect.getId() + " " + connect.getName() + connect.getState() + "\n");
     }
-		
+
 	/************************************ Private Activity methods used for internal setups ********************************************/
 
 	/*** Set up the {@link android.app.ActionBar}. */
@@ -291,7 +332,8 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	private void setupUtilityActivity() {
 		// attach view and onclick listeners to the view buttons
 		checkBtEnabled = (Switch) findViewById(R.id.bt_radio_sw);
-		checkBtEnabled.setOnClickListener(this);		
+		checkBtEnabled.setOnClickListener(this);
+		checkBtEnabled.setOnCheckedChangeListener(this);
 		
 		discoverBtDevice = (ToggleButton) findViewById(R.id.scan_bt_btn);
 		discoverBtDevice.setOnClickListener(this);
@@ -336,7 +378,7 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 			    // Device does not support Bluetooth
 				Log.d(TAG, "No bluetooth adapter found on device");
 				connectionMsgLogs.append("Failure - No bluetooth adapter found on device.\n");
-				Toast.makeText(getApplicationContext(), R.string.device_bt_support, Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), R.string.device_bt_support_no, Toast.LENGTH_SHORT).show();
 				finish();
 			}
 			else {
@@ -363,65 +405,84 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	}
 	
 	private void performDeviceDiscovery() {
-		try {
-			checkForBtEnabled();
-			myArrayAdapter.clear();
-			myListedDevices.clear();
-
-			myPairedDevices = myBluetoothAdapter.getBondedDevices();
-			connectionMsgLogs.append("Commencing device discovery - \n");
-			
-			// If there are paired devices - already known to exist
-			if (!myPairedDevices.isEmpty()) {
-				Log.d(TAG, "bluetooth adapter has some paired devices - obtaining list");
-				connectionMsgLogs.append("Commencing device discovery - \n");
-				// Loop through paired devices
-			    for (BluetoothDevice device : myPairedDevices) {
-			        // Add the name and address to an array adapter to show in a ListView
-			    	Log.d(TAG, "Found Device: " + device.getName() + " with MAC: " + device.getAddress());
-			    	connectionMsgLogs.append("Found Device: " + device.getName() + " with MAC: " + device.getAddress() + "\n");
-			        myArrayAdapter.add(device.getName() + "\n" + device.getAddress() + " \n (Paired)");
-//			        myListedDevices.add(device);
-			    }
-			    
-			    myListedDevices.addAll(myPairedDevices);
-			}
-			
-			startBluetoothDiscovery();
-			
-			Log.d(TAG, "end performDeviceDiscovery()");
-		} catch (Exception e) {
-			Log.e(TAG, "Failed device discovery: " + e);
-		}
-	}
-
-	private void startBluetoothDiscovery() {
 		String debugmsg;
-		// asynchronous - immediately returns with a boolean if discovery has successfully started/canceled
-		// be certain that you always cancel/stop discovery before attempting a connection
-		// you should not perform discovery while connected
-		// performing discovery can significantly reduce the bandwidth available for the connection
-		try {
-			
-			debugmsg = (myBluetoothAdapter.cancelDiscovery()) ? "Cancel any outstanding discoveries" : "Did not cancel discoveries";
-			Log.d(TAG, debugmsg);
-		
-			debugmsg = (myBluetoothAdapter.startDiscovery()) ? "Commence bluetooth device discovery" : "Failed to commmence discoveries";
-			Log.d(TAG, debugmsg);
-
-			// make my local device discoverable for the duration in seconds
-			Intent discoverableIntent = new	Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
-			startActivity(discoverableIntent);
-		
-		} catch (Exception e) {
-			Log.e(TAG, "Device discovery failed: " + e);
+		if (checkBtEnabled.isChecked()) {
+			try {
+					myArrayAdapter.clear();
+					myListedDevices.clear();
+	
+					myPairedDevices = myBluetoothAdapter.getBondedDevices();
+					connectionMsgLogs.append("Commencing device discovery - \n");
+				
+					// If there are paired devices - already known to exist
+					if (!myPairedDevices.isEmpty()) {
+						Log.d(TAG, "bluetooth adapter has some paired devices - obtaining list");
+						connectionMsgLogs.append("Commencing device discovery - \n");
+						
+						// Loop through paired devices
+					    for (BluetoothDevice device : myPairedDevices) {
+					        // Add the name and address to an array adapter to show in a ListView
+					    	Log.d(TAG, "Found Device: " + device.getName() + " with MAC: " + device.getAddress());
+					    	connectionMsgLogs.append("Found Device: " + device.getName() + " with MAC: " + device.getAddress() + "\n");
+					        myArrayAdapter.add(device.getName() + "\n" + device.getAddress() + " \n (Paired)");
+					        /*I can also try to do add devices to the list iteratively*///myListedDevices.add(device);
+					    }
+					    
+					    myListedDevices.addAll(myPairedDevices);
+					}
+					
+					debugmsg = (myBluetoothAdapter.cancelDiscovery()) ? "Cancel any outstanding discoveries" : "Did not cancel discoveries";
+					Log.d(TAG, debugmsg);
+					connectionMsgLogs.append(debugmsg +"\n");
+				
+					debugmsg = (myBluetoothAdapter.startDiscovery()) ? "Commence bluetooth device discovery" : "Failed to commmence discoveries";
+					Log.d(TAG, debugmsg);
+					connectionMsgLogs.append(debugmsg +"\n");
+					
+					// make my local device discoverable for the duration in seconds
+					// asynchronous - immediately returns with a boolean if discovery has successfully started/canceled
+					// be certain that you always cancel/stop discovery before attempting a connection
+					// you should not perform discovery while connected
+					// performing discovery can significantly reduce the bandwidth available for the connection
+					Intent discoverableIntent = new	Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+					discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABLE_DURATION);
+					startActivity(discoverableIntent);
+				
+					Log.d(TAG, "Exit performDeviceDiscovery()");
+	
+			} catch (Exception e) {
+				Log.e(TAG, "Failed device discovery: " + e);
+			}
+		}
+		else {
+			Log.d(TAG, "BLUETOOTH not enabled - make switch on!");
+			discoverBtDevice.setChecked(false);
+			connectionMsgLogs.append("BLUETOOTH not enabled - make switch on!\n");
 		}
 	}
 
+	private void sendTestMessageOut() {
+		Log.d(TAG, "SENDING new test message -");
+		connectionMsgLogs.append("Entered sendTestMessage() \n");
+		try {
+			if (myConnThread != null) {
+				connectionMsgLogs.append("Sending string: "+ string +"\n");
+				connectionMsgLogs.append("Sending buffer: " + writeBuf + "\n");
+				myConnThread.write(writeBuf);
+			}			
+		} catch (Exception e) {
+			Log.e(TAG, "FAILED to send the test message");
+		}		
+	}
+	
     private void manageConnectedSocket(BluetoothSocket socket) {
     	 Log.d(TAG, "Entered the manageConnected socket");
          connectionMsgLogs.append("Entered the manageConnected socket");
+         
+         myConnThread = new ConnectedThread(socket);
+        myConnThread.start();
+
+         myConnThread.write(writeBuf);
 	}
     
 	/*************************************** Private Bluetooth Connection Classes ***********************************************************/
@@ -434,33 +495,42 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	        BluetoothServerSocket tmp = null;
 	        try {
 	        	// MY_UUID is the app's UUID string, also used by the client code
-	            tmp = myBluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME, MY_UUID);
-	            Log.d(TAG, "AcceptThread - " + tmp.toString());
-	            connectionMsgLogs.append("Acceptthread constructor.");
+	            tmp = myBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME, MY_UUID);
+	            Log.d(TAG, "AcceptThread - creating the RFCOMM - " + tmp.toString());
+	            connectionMsgLogs.append("AcceptThread constructor" +tmp.toString() + "\n");
 	        } catch (IOException e) { }
 	        mmServerSocket = tmp;
+            Log.d(TAG, "AcceptThread - after TRY creating the RFCOMM - " + mmServerSocket.toString());
+            connectionMsgLogs.append("AcceptThread AFTER TRY constructor" + mmServerSocket.toString() + "\n");
 	    }
 	 
 	    public void run() {
 	        BluetoothSocket socket = null;
+            
 	        // Keep listening until exception occurs or a socket is returned
 	        while (true) {
 	            try {
 	                socket = mmServerSocket.accept();
-	                Log.d(TAG, "AcceptThread - " + socket.isConnected() + " " + socket.toString());
-	                connectionMsgLogs.append("AcceptThread - " + socket.isConnected() + " " + socket.toString());
-
-		            // If a connection was accepted
-		            if (socket != null) {
-		                // Do work to manage the connection (in a separate thread)
-		            	Log.d(TAG, "AcceptThread - " + socket.isConnected() + " " + socket.toString());
-			            connectionMsgLogs.append("AcceptThread - " + socket.isConnected() + " " + socket.toString());
-		                manageConnectedSocket(socket);
-		                mmServerSocket.close();
-		                break;
-		            }
-	            
+	                Log.d(TAG, "AcceptThread - " + ((socket.isConnected()) ? "connected YES" : "NOT connected") + " " + socket.toString());
+	                connectionMsgLogs.append("AcceptThread - isConnected" + socket.isConnected() + " with socket " + socket.toString());	            
 	            } catch (IOException e) {
+	            	Log.e(TAG, "Failed to acquire a valid socket" + e);
+	                break;
+	            }
+	            
+	            // If a connection was accepted
+	            if (socket != null) {
+	                // Do work to manage the connection (in a separate thread)
+	            	Log.d(TAG, "AcceptThread - SocketISNOTNull" + socket.isConnected() + " " + socket.toString());
+		            connectionMsgLogs.append("AcceptThread - " + socket.isConnected() + " " + socket.toString());
+	                
+		            
+		            manageConnectedSocket(socket); // FIXME
+	    	        
+		            try {
+		            	Log.d(TAG, "Closing server socket since already have a BTSocket");
+	    	            mmServerSocket.close();
+	    	        } catch (IOException e) { }
 	                break;
 	            }
 	        }
@@ -487,7 +557,9 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	        // Get a BluetoothSocket to connect with the given BluetoothDevice
 	        try {
 	            // MY_UUID is the app's UUID string, also used by the server code
-	            tmp = device.createRfcommSocketToServiceRecord(MY_UUID);
+	            tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+	            Log.d(TAG, "what is the value of the current socket request -" + tmp.toString());
+	            connectionMsgLogs.append("what is the value of the current socket request -" + tmp.toString());
 	        } catch (IOException e) { }
 	        mmSocket = tmp;
 	    }
@@ -573,4 +645,6 @@ public class BluetoothUtilityActivity extends Activity implements OnClickListene
 	        } catch (IOException e) { }
 	    }
 	}
+
+	
 } // END OF CLASS 
