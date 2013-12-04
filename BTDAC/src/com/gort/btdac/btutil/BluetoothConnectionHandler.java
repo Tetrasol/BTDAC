@@ -22,24 +22,18 @@ import android.util.Log;
  * thread for performing data transmissions when connected.
  */
 public class BluetoothConnectionHandler {
-    // Debugging
-    private static final String TAG = "com.gort.btdac.btutil.BluetoothConnectionHandler";
+	// Debugging
+    private static final String TAG = "BluetoothConnectionHandler";
     private static final boolean D = true;
-    
+
     // Name for the SDP record when creating server socket
-    private static final String NAME_SECURE = "BluetoothUtilityActivitySecure";
-    private static final String NAME_INSECURE = "BluetoothUtilityActivityInsecure";
-    
+    private static final String NAME_SECURE = "BluetoothConnectionHandlerSec";
+    private static final String NAME_INSECURE = "BluetoothConnectionHandlerInsec";
+
     // Unique UUID for this application
     private static final UUID MY_UUID_SECURE = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final UUID MY_UUID_INSECURE = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
-	
-    // Constants that indicate the current connection state
-    public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
-    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
-	
+
     // Member fields
     private final BluetoothAdapter mAdapter;
     private final Handler mHandler;
@@ -49,8 +43,14 @@ public class BluetoothConnectionHandler {
     private ConnectedThread mConnectedThread;
     private int mState;
 
-	/**
-     * Constructor. Prepares a new BluetoothUtilityActivity session.
+    // Constants that indicate the current connection state
+    public static final int STATE_NONE = 0;       // we're doing nothing
+    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
+    public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
+    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
+
+    /**
+     * Constructor. Prepares a new BluetoothChat session.
      * @param context  The UI Activity Context
      * @param handler  A Handler to send messages back to the UI Activity
      */
@@ -59,7 +59,7 @@ public class BluetoothConnectionHandler {
         mState = STATE_NONE;
         mHandler = handler;
     }
-    
+
     /**
      * Set the current state of the chat connection
      * @param state  An integer defining the current connection state
@@ -77,7 +77,7 @@ public class BluetoothConnectionHandler {
     public synchronized int getState() {
         return mState;
     }
-    
+
     /**
      * Start the chat service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume() */
@@ -97,6 +97,7 @@ public class BluetoothConnectionHandler {
             mSecureAcceptThread = new AcceptThread(true);
             mSecureAcceptThread.start();
         }
+        
         if (mInsecureAcceptThread == null) {
             mInsecureAcceptThread = new AcceptThread(false);
             mInsecureAcceptThread.start();
@@ -239,8 +240,6 @@ public class BluetoothConnectionHandler {
         BluetoothConnectionHandler.this.start();
     }
 
-/************************************************************************************/
-    
     /**
      * This thread runs while listening for incoming connections. It behaves
      * like a server-side client. It runs until a connection is accepted
@@ -324,7 +323,6 @@ public class BluetoothConnectionHandler {
             }
         }
     }
-
 
     /**
      * This thread runs while attempting to make an outgoing connection
@@ -459,8 +457,7 @@ public class BluetoothConnectionHandler {
                 mmOutStream.write(buffer);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(BluetoothUtilityActivity.MESSAGE_WRITE, -1, -1, buffer)
-                        .sendToTarget();
+                mHandler.obtainMessage(BluetoothUtilityActivity.MESSAGE_WRITE, -1, -1, buffer).sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);
             }
@@ -474,9 +471,4 @@ public class BluetoothConnectionHandler {
             }
         }
     }
-
-
-
-
-
 }
